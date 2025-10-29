@@ -1,0 +1,265 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Nucleus | v1",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/me": {
+      "get": {
+        "tags": ["UserEndpoints"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apex-legends/map-rotation": {
+      "get": {
+        "tags": ["Nucleus"],
+        "operationId": "GetApexMapRotation",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentMapRotation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/discord/login": {
+      "get": {
+        "tags": ["AuthEndpoints"],
+        "operationId": "Login",
+        "parameters": [
+          {
+            "name": "returnUrl",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/post-login-redirect": {
+      "get": {
+        "tags": ["AuthEndpoints"],
+        "operationId": "PostLoginRedirect",
+        "parameters": [
+          {
+            "name": "returnUrl",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/links": {
+      "get": {
+        "tags": ["LinksEndpoints"],
+        "operationId": "GetLinksForUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserFrequentLink"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["LinksEndpoints"],
+        "operationId": "AddLink",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/links/{id}": {
+      "delete": {
+        "tags": ["LinksEndpoints"],
+        "operationId": "DeleteLink",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CurrentMapRotation": {
+        "required": [
+          "standard_map",
+          "standard_map_next",
+          "ranked_map",
+          "ranked_map_next",
+          "correct_as_of"
+        ],
+        "type": "object",
+        "properties": {
+          "standard_map": {
+            "$ref": "#/components/schemas/MapInfo"
+          },
+          "standard_map_next": {
+            "$ref": "#/components/schemas/MapInfo"
+          },
+          "ranked_map": {
+            "$ref": "#/components/schemas/MapInfo"
+          },
+          "ranked_map_next": {
+            "$ref": "#/components/schemas/MapInfo"
+          },
+          "correct_as_of": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LinkRequest": {
+        "required": ["url"],
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          }
+        }
+      },
+      "MapInfo": {
+        "required": ["name", "map_start", "map_end", "asset_uri"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "map_start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "map_end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "asset_uri": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "User": {
+        "required": ["id", "username", "avatar"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UserFrequentLink": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "thumbnail_url": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "UserEndpoints"
+    },
+    {
+      "name": "Nucleus"
+    },
+    {
+      "name": "AuthEndpoints"
+    },
+    {
+      "name": "LinksEndpoints"
+    }
+  ]
+}

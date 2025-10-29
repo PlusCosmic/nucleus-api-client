@@ -1,0 +1,17 @@
+{
+  "name": "nucleus-api-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.25.0",
+    "openapi-generator": "^0.1.39"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  },
+  "private": true
+}
