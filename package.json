@@ -1,8 +1,9 @@
 {
-  "name": "nucleus-api-client",
+  "name": "@pluscosmicdev/nucleus-api-client",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
@@ -13,5 +14,8 @@
   "devDependencies": {
     "typescript": "^5.5.3"
   },
-  "private": true
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PlusCosmic/nucleus-api-client.git"
+  }
 }
