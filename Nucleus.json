@@ -7,14 +7,16 @@
   "paths": {
     "/me": {
       "get": {
-        "tags": ["UserEndpoints"],
+        "tags": [
+          "DiscordUserEndpoints"
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/DiscordUser"
                 }
               }
             }
@@ -24,7 +26,9 @@
     },
     "/apex-legends/map-rotation": {
       "get": {
-        "tags": ["Nucleus"],
+        "tags": [
+          "Nucleus"
+        ],
         "operationId": "GetApexMapRotation",
         "responses": {
           "200": {
@@ -42,7 +46,9 @@
     },
     "/auth/discord/login": {
       "get": {
-        "tags": ["AuthEndpoints"],
+        "tags": [
+          "AuthEndpoints"
+        ],
         "operationId": "Login",
         "parameters": [
           {
@@ -62,7 +68,9 @@
     },
     "/auth/post-login-redirect": {
       "get": {
-        "tags": ["AuthEndpoints"],
+        "tags": [
+          "AuthEndpoints"
+        ],
         "operationId": "PostLoginRedirect",
         "parameters": [
           {
@@ -82,7 +90,9 @@
     },
     "/links": {
       "get": {
-        "tags": ["LinksEndpoints"],
+        "tags": [
+          "LinksEndpoints"
+        ],
         "operationId": "GetLinksForUser",
         "responses": {
           "200": {
@@ -101,7 +111,9 @@
         }
       },
       "post": {
-        "tags": ["LinksEndpoints"],
+        "tags": [
+          "LinksEndpoints"
+        ],
         "operationId": "AddLink",
         "requestBody": {
           "content": {
@@ -122,7 +134,9 @@
     },
     "/links/{id}": {
       "delete": {
-        "tags": ["LinksEndpoints"],
+        "tags": [
+          "LinksEndpoints"
+        ],
         "operationId": "DeleteLink",
         "parameters": [
           {
@@ -144,10 +158,260 @@
           }
         }
       }
+    },
+    "/clips/categories": {
+      "get": {
+        "tags": [
+          "ClipsEndpoints"
+        ],
+        "operationId": "GetCategories",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClipCategory"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clips/categories/{category}/videos": {
+      "get": {
+        "tags": [
+          "ClipsEndpoints"
+        ],
+        "operationId": "GetVideosByCategory",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ClipCategoryEnum"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Clip"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ClipsEndpoints"
+        ],
+        "operationId": "CreateVideo",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ClipCategoryEnum"
+            }
+          },
+          {
+            "name": "videoTitle",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateClipResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "BunnyVideo": {
+        "required": [
+          "video_library_id",
+          "guid",
+          "title",
+          "date_uploaded",
+          "length",
+          "status",
+          "framerate",
+          "thumbnail_count",
+          "encode_progress",
+          "storage_size",
+          "collection_id",
+          "thumbnail_file_name",
+          "thumbnail_blurhash",
+          "category",
+          "moments",
+          "meta_tags"
+        ],
+        "type": "object",
+        "properties": {
+          "video_library_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "guid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "date_uploaded": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "length": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "framerate": {
+            "type": "number",
+            "format": "double"
+          },
+          "thumbnail_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "encode_progress": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "storage_size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "collection_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "thumbnail_file_name": {
+            "type": "string"
+          },
+          "thumbnail_blurhash": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "moments": {
+            "type": "array"
+          },
+          "meta_tags": {
+            "type": "array"
+          }
+        }
+      },
+      "Clip": {
+        "required": [
+          "clip_id",
+          "owner_id",
+          "video_id",
+          "category_enum",
+          "video"
+        ],
+        "type": "object",
+        "properties": {
+          "clip_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "owner_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "video_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "category_enum": {
+            "$ref": "#/components/schemas/ClipCategoryEnum"
+          },
+          "video": {
+            "$ref": "#/components/schemas/BunnyVideo"
+          }
+        }
+      },
+      "ClipCategory": {
+        "required": [
+          "name",
+          "category_enum",
+          "art_url"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "category_enum": {
+            "$ref": "#/components/schemas/ClipCategoryEnum"
+          },
+          "art_url": {
+            "type": "string"
+          }
+        }
+      },
+      "ClipCategoryEnum": {
+        "type": "integer"
+      },
+      "CreateClipResponse": {
+        "required": [
+          "signature",
+          "expiration"
+        ],
+        "type": "object",
+        "properties": {
+          "signature": {
+            "type": "string"
+          },
+          "expiration": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "CurrentMapRotation": {
         "required": [
           "standard_map",
@@ -176,8 +440,31 @@
           }
         }
       },
+      "DiscordUser": {
+        "required": [
+          "id",
+          "username",
+          "avatar"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "LinkRequest": {
-        "required": ["url"],
+        "required": [
+          "url"
+        ],
         "type": "object",
         "properties": {
           "url": {
@@ -186,7 +473,12 @@
         }
       },
       "MapInfo": {
-        "required": ["name", "map_start", "map_end", "asset_uri"],
+        "required": [
+          "name",
+          "map_start",
+          "map_end",
+          "asset_uri"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -203,23 +495,6 @@
           "asset_uri": {
             "type": "string",
             "format": "uri"
-          }
-        }
-      },
-      "User": {
-        "required": ["id", "username", "avatar"],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "username": {
-            "type": "string"
-          },
-          "avatar": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -250,7 +525,7 @@
   },
   "tags": [
     {
-      "name": "UserEndpoints"
+      "name": "DiscordUserEndpoints"
     },
     {
       "name": "Nucleus"
@@ -260,6 +535,9 @@
     },
     {
       "name": "LinksEndpoints"
+    },
+    {
+      "name": "ClipsEndpoints"
     }
   ]
 }
