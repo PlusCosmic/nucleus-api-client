@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   LinkRequest,
   UserFrequentLink,
-} from '../models';
+} from '../models/index';
 import {
     LinkRequestFromJSON,
     LinkRequestToJSON,
     UserFrequentLinkFromJSON,
     UserFrequentLinkToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface AddLinkRequest {
     linkRequest: LinkRequest;

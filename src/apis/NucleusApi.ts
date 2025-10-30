@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   CurrentMapRotation,
-} from '../models';
+} from '../models/index';
 import {
     CurrentMapRotationFromJSON,
     CurrentMapRotationToJSON,
-} from '../models';
+} from '../models/index';
 
 /**
  * 

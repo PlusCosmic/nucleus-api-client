@@ -337,10 +337,16 @@
             "type": "string"
           },
           "moments": {
-            "type": "array"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Moment"
+            }
           },
           "meta_tags": {
-            "type": "array"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetaTag"
+            }
           }
         }
       },
@@ -495,6 +501,37 @@
           "asset_uri": {
             "type": "string",
             "format": "uri"
+          }
+        }
+      },
+      "MetaTag": {
+        "required": [
+          "property",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "property": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "Moment": {
+        "required": [
+          "label",
+          "timestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
